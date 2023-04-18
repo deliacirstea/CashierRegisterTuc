@@ -503,7 +503,6 @@ public class App
             return;
         }
 
-
         Console.WriteLine("Enter promotion ID to remove:");
         int promotionId = Convert.ToInt32(Console.ReadLine());
 
@@ -519,10 +518,7 @@ public class App
         List<Promotion> promotionsOnly = new();
         if (input.ToLower() == "y")
         {
-            //product.PromotionList.Remove(promotion);         
             product.PromotionList.Remove(promotion);
-            //promotionsOnly.Remove(promotionsOnly[0]);
-
             //var promotionsOnly = productList.SelectMany(e => e.PromotionList).ToList();
 
             Console.WriteLine($"Promotion with ID {promotionId} has been removed.");
