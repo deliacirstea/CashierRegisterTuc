@@ -1,0 +1,4 @@
+﻿300! bananas! 50
+200! orange! 20
+100! milk! 10
+400! eggs! 30
