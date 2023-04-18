@@ -38,25 +38,32 @@ public class App
         Console.WriteLine("2. Admin");
         Console.WriteLine("0. Close the program");
 
-        int menuSelect = Convert.ToInt32(Console.ReadLine());
+        int menuSelect;
         while (true)
         {
-            if (menuSelect == 1)
+            if (int.TryParse(Console.ReadLine(), out menuSelect))
             {
-                NewPurchase();
-            }
-            if (menuSelect == 2)
-            {
-                AdminMenuTools();
-            }
-            if (menuSelect == 0)
-            {
-                Environment.Exit(0);
+                if (menuSelect == 1)
+                {
+                    NewPurchase();
+                }
+                if (menuSelect == 2)
+                {
+                    AdminMenuTools();
+                }
+                if (menuSelect == 0)
+                {
+                    DisplayFooter();
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine("You have not made a valid choice, try again.\n");
+                }
             }
             else
             {
-                Console.WriteLine("You have not made a valid choice, try again.\n");
-                DisplayMenu();
+                Console.WriteLine("In order to make a selection of the menu, you must select an integer(a number between 0 and 2).Try again!");
             }
         }
 
@@ -70,29 +77,35 @@ public class App
         Console.WriteLine("3. Check the stock list");
         Console.WriteLine("0. Exit");
 
-        int menuSelect = Convert.ToInt32(Console.ReadLine());
+        int menuSelect;
         while (true)
         {
-            if (menuSelect == 1)
+            if (int.TryParse(Console.ReadLine(), out menuSelect))
             {
-                DisplayMenu();
-            }
-            if (menuSelect == 2)
-            {
-                AdminMenuTools();
-            }
-            if (menuSelect == 3)
-            {
-                ReadFromFile();
-            }
-            if (menuSelect == 0)
-            {
-                Environment.Exit(0);
+                if (menuSelect == 1)
+                {
+                    DisplayMenu();
+                }
+                if (menuSelect == 2)
+                {
+                    AdminMenuTools();
+                }
+                if (menuSelect == 3)
+                {
+                    ReadFromFile();
+                }
+                if (menuSelect == 0)
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine("You have not made a valid choice. Try again.");
+                }
             }
             else
             {
-                Console.WriteLine("You have not made a valid choice. Try again.");
-                DisplayMenu();
+                Console.WriteLine("In order to make a selection of the menu, you must select an integer(a number between 0 and 3).Try again!");
             }
         }
     }
@@ -110,51 +123,55 @@ public class App
         Console.WriteLine("8. Return to main menu");
         Console.WriteLine("0. Exit the program");
 
-
-
-        int menuSelect = Convert.ToInt32(Console.ReadLine());
+        int menuSelect;
         while (true)
         {
-            if (menuSelect == 1)
+            if (int.TryParse(Console.ReadLine(), out menuSelect))
             {
-                AddNewStock();
-            }
-            if (menuSelect == 2)
-            {
-                EditPriceStock();
-            }
-            if (menuSelect == 3)
-            {
-                EditNameProduct();
-            }
-            if (menuSelect == 4)
-            {
-                ReadFromFile();
-            }
-            if (menuSelect == 5)
-            {
-                CreatePromotion();
-            }
-            if (menuSelect == 6)
-            {
-                CheckPromotion();
-            }
-            if (menuSelect == 7)
-            {
-                RemovePromotion();
-            }
-            if (menuSelect == 8)
-            {
-                DisplayMenu();
-            }
-            if (menuSelect == 0)
-            {
-                Environment.Exit(0);
+                if (menuSelect == 1)
+                {
+                    AddNewStock();
+                }
+                if (menuSelect == 2)
+                {
+                    EditPriceStock();
+                }
+                if (menuSelect == 3)
+                {
+                    EditNameProduct();
+                }
+                if (menuSelect == 4)
+                {
+                    ReadFromFile();
+                }
+                if (menuSelect == 5)
+                {
+                    CreatePromotion();
+                }
+                if (menuSelect == 6)
+                {
+                    CheckPromotion();
+                }
+                if (menuSelect == 7)
+                {
+                    RemovePromotion();
+                }
+                if (menuSelect == 8)
+                {
+                    DisplayMenu();
+                }
+                if (menuSelect == 0)
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine("You have not made a valid choice");
+                }
             }
             else
             {
-                Console.WriteLine("You have not made a valid choice");
-                DisplayMenu();
+                Console.WriteLine("In order to make a selection of the menu, you must select an integer(a number between 0 and 8).Try again!");
             }
         }
 
@@ -209,7 +226,7 @@ public class App
 
             var feedNumbers = Console.ReadLine();
 
-            if (feedNumbers == "PAY")
+            if (feedNumbers.ToUpper() == "PAY")
             {
                 todayReceiptList.Add(receipt);
                 SaveTheReceipt(todayReceiptList);
@@ -280,6 +297,9 @@ public class App
             foreach (ReceiptItem item in receipt.ReceiptItemList)
             {
                 writingTheReceipt += item.Product.ProductName
+                    + " :  "
+                    + item.Product.ProductPrice.ToString()
+                    + "/unit"
                     + " * "
                     + item.Quantity.ToString()
                     + " = "
@@ -302,10 +322,8 @@ public class App
         }
         catch (Exception ex)
         {
-            Console.WriteLine("An error occurred: " + ex.Message);
+            Console.WriteLine("An error has occurred: " + ex.Message);
         }
-        DisplayMenu();
-        DisplayFooter();
     }
     private void AddNewStock()
     {
@@ -317,14 +335,14 @@ public class App
         Console.Write("Product price -> ");
         int price = Convert.ToInt32(Console.ReadLine());
         productList.Add(new Product(productId, name, price));
-        Console.WriteLine($"New product added: {productId}{name}{price}");
+        Console.WriteLine($"New product added: {productId} {name} {price}");
         SaveStock(productList);
 
         SecondMenu();
     }
     private void EditPriceStock()
     {
-        Console.WriteLine("Enter product ID to edit:");
+        Console.WriteLine("Enter the product ID you wish to edit:");
         int productId = Convert.ToInt32(Console.ReadLine());
 
         var product = productList.FirstOrDefault(p => p.ProductId == productId);
@@ -344,7 +362,7 @@ public class App
     }
     private void EditNameProduct()
     {
-        Console.WriteLine("Enter product ID to edit:");
+        Console.WriteLine("Enter the product ID you wish to edit:");
         int productId = Convert.ToInt32(Console.ReadLine());
 
         var product = productList.FirstOrDefault(p => p.ProductId == productId);
@@ -354,8 +372,8 @@ public class App
             return;
         }
 
-        Console.WriteLine($"Current name for product id{productId} is {product.ProductName}");
-        Console.Write("Enter new name: ");
+        Console.WriteLine($"Current name for product id {productId} is {product.ProductName}");
+        Console.Write("Enter new name -> ");
         string newName = Console.ReadLine();
         product.ProductName = newName;
         SaveStock(productList);
@@ -378,7 +396,7 @@ public class App
             }
 
             Console.WriteLine($"Current price for {product.ProductName} = {product.ProductPrice}");
-            Console.Write("Enter new discount: ");
+            Console.Write("Enter new discount (ex: 2) -> ");
 
             int discountPrice = Convert.ToInt32(Console.ReadLine());
 
@@ -393,7 +411,7 @@ public class App
             product.PromotionList.Add(promotion);
 
             string writingThePromotion = "";
-            writingThePromotion = promotion.PromotionId.ToString() + "!" + promotion.ProductId + "!" + promotion.StartDate.ToString() + "!" + promotion.EndDate.ToString() + "!" + promotion.DiscountPrice.ToString() + "\n";
+            writingThePromotion = promotion.PromotionId + "!" + promotion.ProductId + "!" + promotion.StartDate.ToString() + "!" + promotion.EndDate.ToString() + "!" + promotion.DiscountPrice.ToString() + "\n";
 
 
             try
@@ -403,7 +421,7 @@ public class App
             catch (Exception ex)
             {
 
-                Console.WriteLine("An error occurred: " + ex.Message);
+                Console.WriteLine("An error has occurred: " + ex.Message);
             }
 
             Console.WriteLine($"\n Promotion with id no: {promotion.PromotionId} is created and stored. ");
@@ -444,17 +462,17 @@ public class App
         catch (IOException ex)
         {
             Console.WriteLine("\n---------------------------------------------------------");
-            Console.WriteLine("An error occurred while reading the file: " + ex.Message);
+            Console.WriteLine("An error has occurred while reading the file: " + ex.Message);
         }
         catch (FormatException ex)
         {
             Console.WriteLine("\n---------------------------------------------------------");
-            Console.WriteLine("An error occurred while parsing the file: " + ex.Message);
+            Console.WriteLine("An error has occurred while parsing the file: " + ex.Message);
         }
         catch (Exception ex)
         {
             Console.WriteLine("\n---------------------------------------------------------");
-            Console.WriteLine("An unexpected error occurred: " + ex.Message);
+            Console.WriteLine("An unexpected error has occurred: " + ex.Message);
         }
         return;
     }
@@ -493,7 +511,7 @@ public class App
     }
     private void RemovePromotion()
     {
-        Console.WriteLine("Enter product ID to remove:");
+        Console.WriteLine("In order to remove a campain you must enter the product ID first to identify the campaign:");
         int clientProductId = Convert.ToInt32(Console.ReadLine());
 
         Product product = productList.Find(p => p.ProductId == clientProductId);
@@ -503,7 +521,7 @@ public class App
             return;
         }
 
-        Console.WriteLine("Enter promotion ID to remove:");
+        Console.WriteLine("Enter the promotion ID you wish to remove:");
         int promotionId = Convert.ToInt32(Console.ReadLine());
 
         Promotion promotion = product.PromotionList.Find(p => p.PromotionId == promotionId);
@@ -519,7 +537,6 @@ public class App
         if (input.ToLower() == "y")
         {
             product.PromotionList.Remove(promotion);
-            //var promotionsOnly = productList.SelectMany(e => e.PromotionList).ToList();
 
             Console.WriteLine($"Promotion with ID {promotionId} has been removed.");
             SavePromotionsToFile();

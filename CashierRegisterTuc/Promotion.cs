@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CashierRegisterTuc
+﻿namespace CashierRegisterTuc
 {
     public class Promotion
     {
@@ -41,7 +35,7 @@ namespace CashierRegisterTuc
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Can not write the promotion ID : an error occurred: " + ex.Message);
+                Console.WriteLine($"Cannot write the promotion with ID : {PromotionId}. The following error is given : " + ex.Message);
             }
         }
         public void InitiatePromotionCounter()

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CashierRegisterTuc
+﻿namespace CashierRegisterTuc
 {
     public class Receipt
     {
@@ -27,7 +21,6 @@ namespace CashierRegisterTuc
         {
             if (idCounter == 0)
             {
-
                 var savePath = Directory.GetCurrentDirectory() + "\\RECEIPT_ID.txt";
                 if (File.Exists(savePath))
                 {
@@ -50,7 +43,7 @@ namespace CashierRegisterTuc
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred: " + ex.Message);
+                Console.WriteLine("An error has occurred: " + ex.Message);
             }
         }
         public decimal TotalToPay()
@@ -82,22 +75,22 @@ namespace CashierRegisterTuc
             decimal FinalFinalPrice = 0;
             foreach (var item in ReceiptItemList)
             {
-
                 int promotiondId = 0;
                 var finalPrice = item.OrderTotal(Date, ref campaign, ref promotiondId);
                 FinalFinalPrice += finalPrice;
                 var promotion = item.Product.PromotionList.FirstOrDefault(p => p.PromotionId == promotiondId);
                 if (campaign == true && promotion != null)
                 {
-                    result2 = result2 + "\n" + item.Product.ProductName + " " + item.Quantity + " * " + (item.Product.ProductPrice - promotion.DiscountPrice) + " = " + finalPrice.ToString();
+                    result2 = result2 + "\n" + item.Product.ProductName + " : " + item.Quantity + "/unit " + " * " + (item.Product.ProductPrice - promotion.DiscountPrice) + " = " + finalPrice.ToString();
                 }
                 else
                 {
-                    result2 = result2 + "\n" + item.Product.ProductName + " " + item.Quantity + " * " + item.Product.ProductPrice.ToString() + " = " + finalPrice.ToString();
+                    result2 = result2 + "\n" + item.Product.ProductName + " : " + item.Quantity + "/unit " + " * " + item.Product.ProductPrice.ToString() + " = " + finalPrice.ToString();
                 }
 
             }
             result = result + "\n" + result2 + "\nTotal to pay = " + FinalFinalPrice.ToString();
+
             Console.WriteLine(result);
         }
         public void ClearReceiptItem()
@@ -124,8 +117,8 @@ namespace CashierRegisterTuc
                     if (d.Date >= promotion.StartDate.Date && d.Date <= promotion.EndDate.Date)
                     {
                         result = (Product.ProductPrice - promotion.DiscountPrice);
-                        Console.WriteLine("\n campaign discount for" + Product.ProductName + " is used! new price : " + result.ToString());
-                        Console.WriteLine(" original price : " + (Product.ProductPrice).ToString());
+                        Console.WriteLine("\nCampaign discount for" + Product.ProductName + " is found and used! New price applied : " + result.ToString());
+                        Console.WriteLine(" Original price : " + (Product.ProductPrice).ToString());
                         usedPromotion = true;
                         usedPromotionId = promotion.PromotionId;
                         return result * Quantity;
