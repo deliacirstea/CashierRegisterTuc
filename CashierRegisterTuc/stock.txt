@@ -1,4 +1,4 @@
-﻿300! bananas! 50
-200! orange! 20
-100! milk! 10
-400! eggs! 30
+﻿300! bananas! 50!PricePerKg
+200! orange! 20!PricePerKg
+100! milk! 10!PricePerPcs
+400! eggs! 30!PricePerPcs

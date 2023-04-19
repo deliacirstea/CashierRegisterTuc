@@ -180,9 +180,20 @@ public class App
     {
         Console.WriteLine("-----------------------------------------");
         Console.WriteLine("If you are ready to pay please write: PAY");
+        Console.WriteLine("If you wish to go back to the menu press 1.");
         Console.WriteLine("If you wish to continue shopping");
         Console.WriteLine("<product PLU> <quantity> \n");
         Console.WriteLine("-----------------------------------------");
+        int answer = Convert.ToInt32(Console.ReadLine());
+        if (answer == 1)
+        {
+            DisplayMenu();
+        }
+        else
+        {
+            Console.WriteLine("Not a valid choice.Try again please.");
+            DisplayMenu();
+        }
     }
     private void ReadFromFile()
     {
@@ -203,9 +214,9 @@ public class App
         foreach (string line in lines)
         {
             string[] items = line.Split('!');
-            Product product = new Product(Convert.ToInt32(items[0]), items[1], Convert.ToInt32(items[2]));
-            productList.Add(product);
 
+            Product product = new Product(Convert.ToInt32(items[0]), items[1], Convert.ToInt32(items[2]), (PriceType)Enum.Parse(typeof(PriceType), items[3]));
+            productList.Add(product);
         }
         if (File.Exists("promotion.txt"))
         {
@@ -249,14 +260,14 @@ public class App
                     receipt.UpdateReceipt(receiptItem, Convert.ToInt32(numbers[1]));
                     receipt.ShowReceipt();
                     continue;
-
                 }
             }
 
             var product2 = productList.FirstOrDefault(x => x.ProductId == Convert.ToInt32(numbers[0]));
             if (product2 == null)
             {
-                Console.WriteLine("Invalid Product ID. Please try again.");
+                Console.WriteLine("Invalid Product ID. Please try again.\n");
+                DisplayMenu();
                 continue;
             }
 
@@ -273,7 +284,7 @@ public class App
         List<string> lines = new List<string>();
         foreach (Product product in products)
         {
-            string line = $"{product.ProductId}!{product.ProductName}!{product.ProductPrice}";
+            string line = $"{product.ProductId}!{product.ProductName}!{product.ProductPrice}!{product.PriceType}";
             lines.Add(line);
         }
 
@@ -299,7 +310,8 @@ public class App
                 writingTheReceipt += item.Product.ProductName
                     + " :  "
                     + item.Product.ProductPrice.ToString()
-                    + "/unit"
+                    + "/"
+                    + item.Product.PriceType
                     + " * "
                     + item.Quantity.ToString()
                     + " = "
@@ -334,8 +346,16 @@ public class App
         string name = Console.ReadLine();
         Console.Write("Product price -> ");
         int price = Convert.ToInt32(Console.ReadLine());
-        productList.Add(new Product(productId, name, price));
-        Console.WriteLine($"New product added: {productId} {name} {price}");
+
+        Console.WriteLine("Enter price type:");
+        Console.WriteLine("1. Price per kg");
+        Console.WriteLine("2. Price per piece");
+        int priceTypeInput = Convert.ToInt32(Console.ReadLine());
+        PriceType priceType = (PriceType)(priceTypeInput - 1);
+
+        productList.Add(new Product(productId, name, price, priceType));
+        Console.WriteLine($"New product added: {productId} {name} {price} {priceType}");
+
         SaveStock(productList);
 
         SecondMenu();

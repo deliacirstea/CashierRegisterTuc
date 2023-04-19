@@ -81,11 +81,11 @@
                 var promotion = item.Product.PromotionList.FirstOrDefault(p => p.PromotionId == promotiondId);
                 if (campaign == true && promotion != null)
                 {
-                    result2 = result2 + "\n" + item.Product.ProductName + " : " + item.Quantity + "/unit " + " * " + (item.Product.ProductPrice - promotion.DiscountPrice) + " = " + finalPrice.ToString();
+                    result2 = result2 + "\n" + item.Product.ProductName + " : " + item.Quantity + " * " + (item.Product.ProductPrice - promotion.DiscountPrice) +"/"+item.Product.PriceType + " = " + finalPrice.ToString();
                 }
                 else
                 {
-                    result2 = result2 + "\n" + item.Product.ProductName + " : " + item.Quantity + "/unit " + " * " + item.Product.ProductPrice.ToString() + " = " + finalPrice.ToString();
+                    result2 = result2 + "\n" + item.Product.ProductName + " : " + item.Quantity + " * " + item.Product.ProductPrice.ToString()  +"/" + item.Product.PriceType + " = " + finalPrice.ToString();
                 }
 
             }
@@ -128,7 +128,8 @@
             }
 
             if (result == -1)
-                result = Product.ProductPrice * Quantity;
+                
+                   result = Product.ProductPrice * Quantity;
 
             return result;
         }
